@@ -1,0 +1,3 @@
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const resource=require('../resources.json');
+test('ressource PDF locale incluse et lien HTTPS académique',()=>{const bytes=fs.readFileSync(path.join(__dirname,'../public/resources',resource.localFile));assert.equal(bytes.subarray(0,5).toString(),'%PDF-');const url=new URL(resource.onlineUrl);assert.equal(url.protocol,'https:');assert.equal(url.hostname,'portail-ressources-education-dsden74.web.ac-grenoble.fr');assert(url.pathname.endsWith('.pdf'));assert.equal(path.basename(resource.localFile),resource.localFile)});

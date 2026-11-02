@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {THEMES,normalizeTheme,showLessonBackground} from '../appearance.js';
+test('huit palettes simples et distinctes',()=>{assert.deepEqual(THEMES.map(t=>t.id),['mauve','or','rose','gris','turquoise','rouge','vert','beige']);assert.equal(new Set(THEMES.map(t=>t.color)).size,8)});
+test('anciens profils compatibles',()=>{assert.equal(normalizeTheme(undefined),'rose');assert.equal(normalizeTheme('inconnu'),'rose');assert.equal(normalizeTheme('turquoise'),'turquoise')});
+test('fond actif par défaut pour les anciennes séances, désactivable',()=>{assert(showLessonBackground({}));assert(showLessonBackground({showBackground:true}));assert(!showLessonBackground({showBackground:false}));assert(!showLessonBackground(JSON.parse(JSON.stringify({showBackground:false}))))});

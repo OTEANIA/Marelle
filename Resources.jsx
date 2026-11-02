@@ -1,0 +1,5 @@
+import React from 'react';import resource from './resources.json';
+export default function Resources({notify}) {
+ const open=async mode=>{try{if(window.marelle)await window.marelle.openResource(mode);else{const url=mode==='offline'?new URL('resources/'+resource.localFile,document.baseURI).href:mode==='source'?resource.sourcePage:resource.onlineUrl;window.open(url,'_blank','noopener,noreferrer');}}catch(error){notify('Impossible d’ouvrir la ressource : '+error.message)}};
+ return <section className="resources-panel" aria-label="Ressources pédagogiques"><div className="resource-badge">▤</div><small>DOCUMENT DE RÉFÉRENCE</small><h2>{resource.title}</h2><p>{resource.credit}</p><p>Le document fourni est disponible en ligne sur le portail académique. Sa copie intégrée à Marelle reste consultable sans connexion ; ses liens externes nécessitent Internet.</p><div className="resource-actions"><button className="primary" onClick={()=>open('online')}>↗ Consulter en ligne</button><button onClick={()=>open('offline')}>▤ Ouvrir la copie hors ligne</button></div><button className="source-link" onClick={()=>open('source')}>Voir la page de publication ↗</button></section>
+}

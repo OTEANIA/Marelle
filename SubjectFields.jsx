@@ -1,0 +1,6 @@
+import React from 'react';
+import{SUBJECTS,scienceCycle,subthemesFor,changeSubject,changeScienceCycle}from'./disciplines.js';
+export default function SubjectFields({lesson,onChange}){
+ const options=subthemesFor(lesson);
+ return <><label className="field"><span>Discipline</span><select value={lesson.subject} onChange={event=>onChange(changeSubject(lesson,event.target.value))}>{!SUBJECTS.some(s=>s[0]===lesson.subject)&&<option value={lesson.subject}>{lesson.subject}</option>}{SUBJECTS.map(([name])=><option key={name}>{name}</option>)}</select></label>{lesson.subject==='Sciences'&&<label className="field"><span>Cycle pour les sciences</span><select value={scienceCycle(lesson)} onChange={event=>onChange(changeScienceCycle(lesson,event.target.value))}><option>Cycle 2</option><option>Cycle 3</option></select></label>}{options.length>0&&<label className="field"><span>Sous-thème{lesson.subject==='Sciences'?' · '+scienceCycle(lesson):''}</span><select value={lesson.subTheme||''} onChange={event=>onChange({...lesson,subTheme:event.target.value})}><option value="">Non renseigné</option>{lesson.subTheme&&!options.includes(lesson.subTheme)&&<option value={lesson.subTheme}>{lesson.subTheme} (valeur conservée)</option>}{options.map(value=><option key={value}>{value}</option>)}</select></label>}</>
+}

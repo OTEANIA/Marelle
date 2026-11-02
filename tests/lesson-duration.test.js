@@ -1,0 +1,3 @@
+import test from 'node:test';import assert from 'node:assert/strict';import{lessonTiming}from'../lesson-duration.js';
+test('la durée imprimée provient des étapes, pas du créneau',()=>{assert.deepEqual(lessonTiming({steps:[{time:'10'},{time:'15'},{time:'15'},{time:'5'}]},20),{total:45,complete:true,missing:0,slotMinutes:20,difference:25})});
+test('durées manquantes et invalides signalées ; virgules acceptées',()=>{const t=lessonTiming({steps:[{time:'2,5'},{time:''},{time:'-5'},{time:'abc'}]},20);assert.equal(t.total,2.5);assert.equal(t.missing,3);assert.equal(t.complete,false);assert.equal(lessonTiming({steps:[]},20).complete,false)});
