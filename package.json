@@ -50,7 +50,7 @@
     },
     "mac": {
       "target": [
-        "zip"
+        "dmg"
       ],
       "category": "public.app-category.education",
       "icon": "build-resources/icon.icns",
