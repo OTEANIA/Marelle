@@ -25,6 +25,35 @@ jobs:
       - name: Lancer la compilation Mac
         run: npm run dist:mac
 
+      - name: Vérifier la version Sierra Intel et sa signature
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          app="release/mac/Marelle.app"
+          binary="$app/Contents/MacOS/Marelle"
+
+          if [[ ! -d "$app" ]]; then
+            echo "::error::Application absente : $app"
+            exit 1
+          fi
+
+          lipo "$binary" -verify_arch x86_64
+
+          minimum=$(/usr/libexec/PlistBuddy \
+            -c "Print :LSMinimumSystemVersion" \
+            "$app/Contents/Info.plist")
+
+          echo "Version minimale de macOS : $minimum"
+
+          if [[ "$minimum" != "10.12.0" && "$minimum" != "10.12" ]]; then
+            echo "::error::La version minimale déclarée doit être 10.12.0"
+            exit 1
+          fi
+
+          codesign --verify --deep --strict --verbose=2 "$app"
+          codesign --display --verbose=2 "$app"
+
       - name: Créer la préversion Sierra et téléverser DMG et ZIP
         uses: softprops/action-gh-release@v2
         with:
