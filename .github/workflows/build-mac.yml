@@ -3,11 +3,16 @@ name: Build et Release MacOS
 on:
   push:
     tags:
-      - 'v*' # Le script se déclenchera uniquement quand vous créerez un tag (ex: v3.6.0)
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   release-mac:
     runs-on: macos-latest
+
     steps:
       - name: Récupérer le code source
         uses: actions/checkout@v4
@@ -16,16 +21,52 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
 
       - name: Installer les dépendances
         run: npm ci
 
-      - name: Lancer la compilation Mac
+      - name: Tester
+        run: npm test
+
+      - name: Compiler pour Intel et Apple Silicon
         run: npm run dist:mac
 
-      - name: Créer la Release et téléverser le DMG
+      - name: Vérifier les architectures et signatures
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for arch in x64 arm64; do
+            if [[ "$arch" == "x64" ]]; then
+              app="release/mac/Marelle.app"
+              expected="x86_64"
+            else
+              app="release/mac-arm64/Marelle.app"
+              expected="arm64"
+            fi
+
+            if [[ ! -d "$app" ]]; then
+              echo "::error::Application absente : $app"
+              exit 1
+            fi
+
+            echo "Vérification de $app"
+            lipo -verify_arch "$expected" "$app/Contents/MacOS/Marelle"
+            codesign --verify --deep --strict --verbose=2 "$app"
+            codesign --display --verbose=2 "$app"
+          done
+
+      - name: Conserver les DMG pour les essais
+        uses: actions/upload-artifact@v4
+        with:
+          name: Marelle-Mac-DMG
+          path: release/*.dmg
+          if-no-files-found: error
+
+      - name: Publier les DMG dans la release
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           files: release/*.dmg
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_unmatched_files: true
