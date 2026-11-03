@@ -54,7 +54,8 @@
       ],
       "category": "public.app-category.education",
       "icon": "build-resources/icon.icns",
-      "identity": null
+      "identity": null,
+      "minimumSystemVersion": "10.12.0"
     },
     "dmg": {
       "sign": false,
