@@ -52,7 +52,7 @@ jobs:
             fi
 
             echo "Vérification de $app"
-            lipo -verify_arch "$expected" "$app/Contents/MacOS/Marelle"
+            lipo "$app/Contents/MacOS/Marelle" -verify_arch "$expected"
             codesign --verify --deep --strict --verbose=2 "$app"
             codesign --display --verbose=2 "$app"
           done
