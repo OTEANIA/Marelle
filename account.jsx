@@ -1,3 +1,7 @@
+import {subjectLabel} from './curriculum.js';
+import {SubjectColors} from './subject-appearance.jsx';
+import {SUBJECTS} from './disciplines.js';
+import {subjectPalette} from './subject-palette.js';
 import {migratePlanner} from "./schedule.js";
 import React, { useState, useEffect, useRef } from "react";
 import { THEMES, normalizeTheme } from "./appearance.js";
@@ -103,13 +107,13 @@ export function AccountGate({ renderApp }) {
     else update({ ...current.current, profile: p });
     setProfile(p);
     setEdit(false);
-  }}><div className="account-flower">✿</div><h1>{profile ? "Mon profil" : "Bienvenue sur Marelle"}</h1><p>Ton atelier de classe, sur ton ordinateur.<br />Aucun compte ni connexion nécessaire.</p><label className="field"><span>Nom affiché</span><input required maxLength={80} value={fields.name} onChange={(e) => setFields({ ...fields, name: e.target.value })} /></label><label className="field"><span>Classe en cours</span><input required maxLength={100} value={fields.className} onChange={(e) => setFields({ ...fields, className: e.target.value })} /></label><fieldset className="theme-picker"><legend>Couleur du thème</legend><div className="theme-options">{THEMES.map((t) => <label className="theme-option" key={t.id}><input type="radio" name="theme" checked={normalizeTheme(fields.theme) === t.id} onChange={() => setFields({ ...fields, theme: t.id })} /><span className="theme-swatch" style={{ background: t.color }} />{t.label}</label>)}</div></fieldset><button className="primary">{profile ? "Enregistrer" : "Ouvrir mon atelier"}</button>{profile && <button type="button" onClick={() => setEdit(false)}>Annuler</button>}</form>;
+  }}><div className="account-flower">✿</div><h1>{profile ? "Mon profil" : "Bienvenue sur Marelle"}</h1><p>Ton atelier de classe, sur ton ordinateur.<br />Aucun compte ni connexion nécessaire.</p><label className="field"><span>Nom affiché</span><input required maxLength={80} value={fields.name} onChange={(e) => setFields({ ...fields, name: e.target.value })} /></label><label className="field"><span>Classe en cours</span><input required maxLength={100} value={fields.className} onChange={(e) => setFields({ ...fields, className: e.target.value })} /></label><fieldset className="theme-picker"><legend>Couleur du thème</legend><div className="theme-options">{THEMES.map((t) => <label className="theme-option" key={t.id}><input type="radio" name="theme" checked={normalizeTheme(fields.theme) === t.id} onChange={() => setFields({ ...fields, theme: t.id })} /><span className="theme-swatch" style={{ background: t.color }} />{t.label}</label>)}</div></fieldset>{profile&&<fieldset className="subject-colors"><legend>Couleurs des disciplines</legend>{SUBJECTS.map(([subject])=><label key={subject}>{subjectLabel(subject)}<input type="color" value={fields.subjectColors?.[subject]||subjectPalette(subject).accent} onChange={e=>setFields({...fields,subjectColors:{...fields.subjectColors,[subject]:e.target.value}})}/></label>)}<button type="button" onClick={()=>setFields({...fields,subjectColors:{}})}>Rétablir les couleurs par défaut</button></fieldset>}<button className="primary">{profile ? "Enregistrer" : "Ouvrir mon atelier"}</button>{profile && <button type="button" onClick={() => setEdit(false)}>Annuler</button>}</form>;
   if (!ready) return <div className="account-page"><div className="account-card"><h1>Marelle ✿</h1><p role="alert">{error || "Chargement des donn\xE9es\u2026"}</p>{error && <><p>Le fichier existant n’est pas remplacé. Une copie doit être récupérée dans le dossier des données.</p><button onClick={() => native?.openDataFolder()}>Ouvrir le dossier de données</button></>}</div></div>;
   if (!profile) return <div className="account-page">{form}</div>;
-  return <>{renderApp({ initialData: initial, storageKey: "marelle-desktop-render-cache", profile, onProfile: () => {
+  return <><SubjectColors.Provider value={profile.subjectColors}>{renderApp({ initialData: initial, storageKey: "marelle-desktop-render-cache", profile, onProfile: () => {
     setFields({ ...profile });
     setEdit(true);
   }, onLogout: () => native ? native.openDataFolder() : alert("Cet aper\xE7u utilise le stockage du navigateur. Dans l\u2019application de bureau, ce bouton ouvre le dossier des donn\xE9es."), onData: (planner) => update({ ...current.current, planner }), syncStatus: status, retrySync: () => flush().catch(() => {
-  }) })}{edit && <div className="overlay">{form}</div>}{error && <div className="account-error" role="alert">{error}<button onClick={() => flush().catch(() => {
+  }) })}</SubjectColors.Provider>{edit && <div className="overlay">{form}</div>}{error && <div className="account-error" role="alert">{error}<button onClick={() => flush().catch(() => {
   })}>Réessayer</button></div>}</>;
 }

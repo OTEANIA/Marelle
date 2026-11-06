@@ -1,3 +1,4 @@
+import {subjectLabel} from '../curriculum.js';
 import test from'node:test';import assert from'node:assert/strict';import fs from'node:fs/promises';import os from'node:os';import path from'node:path';import{createRequire}from'node:module';import{build}from'esbuild';import{migratePlanner}from'../schedule.js';
 const require=createRequire(import.meta.url);const{createStore}=require('../electron/store.cjs');
 test('séances indépendantes, séquences et projets : rendu complet, sauvegarde native et restauration',async()=>{
@@ -7,7 +8,7 @@ test('séances indépendantes, séquences et projets : rendu complet, sauvegarde
  const{newSequence,newProject,sequenceMinutes,validateWorkshop,SequenceDocument,ProjectDocument,PATHWAYS,render,renderList}=require(file);
  const seq=newSequence();Object.assign(seq,{title:'Végétaux',subject:'Sciences',subTheme:'Le vivant, la matière et les objets',level:'Cycle 2',skills:'COMPETENCES_ENTIERES',objectives:'OBJECTIFS_ENTIERS',evaluation:'EVALUATION_FINALE',observables:'OBSERVABLES_ENTIERS',extensions:'SUITES_ENTIERES',sessions:[{id:'s1',title:'Anatomie',time:'40',objectives:'NOMMER_RACINES',activities:'ENQUETE_PLANTE'},{id:'s2',title:'Germination',time:'40',objectives:'OBSERVER_GRAINE',activities:'EXPERIENCE'}]});
  assert.equal(sequenceMinutes(seq),80);let html=render(SequenceDocument,{sequence:seq});for(const value of['Végétaux','COMPETENCES_ENTIERES','OBJECTIFS_ENTIERS','EVALUATION_FINALE','OBSERVABLES_ENTIERS','SUITES_ENTIERES','NOMMER_RACINES','ENQUETE_PLANTE','80 min'])assert(html.includes(value));
- for(const subject of['Français','Mathématiques','Reo Tahiti','Arts visuels','Éducation musicale','Anglais','EPS','EMC','Vie de classe','Géographie','Histoire','Sciences'])assert(render(SequenceDocument,{sequence:{...seq,subject}}).includes(subject));
+ for(const subject of['Français','Mathématiques','Reo Tahiti','Arts visuels','Éducation musicale','Anglais','EPS','EMC','Vie de classe','Géographie','Histoire','Sciences'])assert(render(SequenceDocument,{sequence:{...seq,subject}}).includes(subjectLabel(subject,"Cycle 2")));
  assert(!render(SequenceDocument,{sequence:{...seq,showBackground:false}}).includes('sheet-bg'));
  const project=newProject();Object.assign(project,{title:'HERBIER',question:'QUESTION_CENTRALE',pathwayTheme:'Développement durable',production:'EXPOSITION_FINALE',branches:Array.from({length:12},(_,i)=>({id:'b'+i,subject:i%2?'Sciences':'Français',count:'1',objectives:'OBJECTIF_BRANCHE_'+i+'_FIN'}))});
  html=render(ProjectDocument,{project});for(let i=0;i<12;i++)assert(html.includes('OBJECTIF_BRANCHE_'+i+'_FIN'));assert(html.includes('QUESTION_CENTRALE'));assert(html.includes('EXPOSITION_FINALE'));assert(html.includes('Développement durable'));assert.equal(PATHWAYS.length,4);

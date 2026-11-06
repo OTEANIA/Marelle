@@ -1,3 +1,5 @@
+import {subjectLabel} from './curriculum.js';
+import {useSubjectPalette,useSheetPalette} from './subject-appearance.jsx';
 import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import "./style.css";
@@ -10,7 +12,7 @@ import WeeklyPrint from "./WeeklyPrint.jsx";
 import Journal from "./Journal.jsx";
 import Workshop,{validateWorkshop} from "./Workshop.jsx";
 import PrintPreview from "./PrintPreview.jsx";
-import {sheetPalette,paletteStyle} from "./subject-palette.js";
+import {paletteStyle} from "./subject-palette.js";
 import {lessonTiming} from "./lesson-duration.js";
 import DaySlots from "./DaySlots.jsx";
 import{previewLessonSlot}from"./resolved-day.js";
@@ -44,6 +46,8 @@ const duration = (s) => {
 };
 const meta = (s) => subjects.find((x) => x[0] === s) || subjects[0];
 function App({ initialData, storageKey, profile, onProfile, onLogout, onData, syncStatus, retrySync }) {
+ const subjectPalette=useSubjectPalette();
+
   const [data, setData] = useState(() => {
     if (initialData) return migratePlanner(initialData);
     try {
@@ -166,9 +170,9 @@ function App({ initialData, storageKey, profile, onProfile, onLogout, onData, sy
   }}>Dupliquer la semaine</button><button onClick={()=>doPrint({type:"week",week})}>▤ Imprimer le semainier</button><button className="primary" onClick={() => {
     setView("day");
     doPrint({ type: "journal", date: plus(week, day) });
-  }}>↓ Cahier du jour</button></div></div>}{workshopView?<Workshop key={view} kind={view} data={data} onData={setData} onLesson={openLoose} onNewLesson={()=>openLoose()} onPrint={doPrint}/>:view==='resources'?<Resources notify={flash}/>:view === "week" ? <><div className="legend">{subjects.slice(0, 7).map((s) => <span key={s[0]}><i style={{ background: s[2] }} />{s[0]}</span>)}</div><div className="planner week-planner"><div className="weekly-layout">{days.map((label,index)=>{
+  }}>↓ Cahier du jour</button></div></div>}{workshopView?<Workshop key={view} kind={view} data={data} onData={setData} onLesson={openLoose} onNewLesson={()=>openLoose()} onPrint={doPrint}/>:view==='resources'?<Resources notify={flash}/>:view === "week" ? <><div className="legend">{subjects.map((s) => <span key={s[0]}><i style={{ background: subjectPalette(s[0]).card }} />{subjectLabel(s[0])}</span>)}</div><div className="mobile-week-days" aria-label="Jour du semainier">{days.map((label,index)=><button key={label} type="button" aria-pressed={index===day} onClick={()=>setDay(index)}>{label}</button>)}</div><div className="planner week-planner"><div className="weekly-layout">{days.map((label,index)=>{
  const date=plus(week,index), config=configForDay(data,index);
- return <section className="week-column" key={label} aria-label={label}><div className={'week-column-head '+(index===day?'selected-day':'')}><button onClick={()=>{setDay(index);setView('day')}}>{label}<span>{new Date(date+'T12:00:00').getDate()}</span></button><small>{config.enabled?'Fin des classes à '+config.endTime:'Sans classe'}</small></div><div className="week-column-body"><DaySlots date={date} data={data} onOpen={open} onSelect={()=>setDay(index)}/><div className="end-of-day"><span>{config.enabled?'☀':'☁'}</span><strong>{config.enabled?'Fin des classes · '+config.endTime:'Journée sans classe'}</strong><small>{config.enabled?'Aucun créneau au-delà de cette heure.':'Aucune séance prévue.'}</small></div></div></section>
+ return <section className={"week-column"+(index===day?" week-column-current":"")} key={label} aria-label={label}><div className={'week-column-head '+(index===day?'selected-day':'')}><button onClick={()=>{setDay(index);setView('day')}}>{label}<span>{new Date(date+'T12:00:00').getDate()}</span></button><small>{config.enabled?'Fin des classes à '+config.endTime:'Sans classe'}</small></div><div className="week-column-body"><DaySlots date={date} data={data} onOpen={open} onSelect={()=>setDay(index)}/><div className="end-of-day"><span>{config.enabled?'☀':'☁'}</span><strong>{config.enabled?'Fin des classes · '+config.endTime:'Journée sans classe'}</strong><small>{config.enabled?'Aucun créneau au-delà de cette heure.':'Aucune séance prévue.'}</small></div></div></section>
 })}</div></div>{hiddenCount>0&&<p className="schedule-notice">{hiddenCount} séance(s) hors des horaires actuels sont conservées dans tes données. Elles ne sont pas imprimées dans le cahier journal ; réactive leurs créneaux pour les retrouver.</p>}<div className="bottom-hint"><span>♡ Ton semainier garde le rythme. Tes idées font le reste.</span><button onClick={() => {
     const mondaySlots=slotsForDate(data,week).filter(s=>!isBreak(s));
     let s=mondaySlots.find(x=>x.label==='Mathématiques')||mondaySlots[0];
@@ -182,7 +186,7 @@ function App({ initialData, storageKey, profile, onProfile, onLogout, onData, sy
     if (e.target === e.currentTarget && confirm("Fermer sans enregistrer les modifications ?")) setEdit(null);
   }}><section className="modal" role="dialog" aria-modal="true" aria-label="Préparer ma séance"><div className="modal-head"><div><small>{edit.loose?"Séance indépendante du semainier":<>{days[(/* @__PURE__ */ new Date(edit.date + "T12:00:00")).getDay() - 1]} {pretty(edit.date)} · {edit.slot.start}–{edit.slot.end}</>}</small><h2>Une nouvelle idée à faire grandir ✿</h2></div><button aria-label="Fermer" onClick={() => {
     if (confirm("Fermer sans enregistrer ?")) setEdit(null);
-  }}>×</button></div><div className="tabs">{["Essentiel", "Déroulement", "Réussite & adaptations"].map((t) => <button className={tab === t ? "chosen" : ""} onClick={() => setTab(t)} key={t}>{t}</button>)}</div><label className="background-toggle"><input type="checkbox" checked={showLessonBackground(draft)} onChange={(e) => setDraft({ ...draft, showBackground: e.target.checked })} /> Inclure le fond de la discipline (opacité 20 %)</label><div className="modal-body"><p className="soft-note" role="status"><b>Durée des étapes : {lessonTiming(draft,duration(edit.slot)).total} min</b>{!edit.loose&&<> · Créneau : {duration(edit.slot)} min</>}{!lessonTiming(draft,duration(edit.slot)).complete&&" · Certaines durées restent à renseigner."}</p>{tab === "Essentiel" ? <><div className="form-grid"><Field label="Nom de la séance" value={draft.title} change={(v) => setDraft({ ...draft, title: v })} wide /><SubjectFields lesson={draft} onChange={setDraft} /><Field label="Niveau / groupe" value={draft.level} change={(v) => setDraft({ ...draft, level: v })} /><Field label="Séquence" value={draft.sequence} change={(v) => setDraft({ ...draft, sequence: v })} /><Field label="N° de séance" value={draft.number} change={(v) => setDraft({ ...draft, number: v })} />{[["objectives", "Objectifs"], ["skills", "Compétences"], ["material", "Matériel"]].map(([k, l]) => <Field key={k} label={l} value={draft[k]} area wide change={(v) => setDraft({ ...draft, [k]: v })} />)}</div><p className="soft-note">Tu peux enregistrer une séance partielle et la compléter plus tard.</p></> : tab === "Déroulement" ? <><div className="step-summary"><b>{draft.steps.length} étape(s)</b><span>{lessonTiming(draft,duration(edit.slot)).total} min renseignées{!edit.loose&&<> / {duration(edit.slot)} min au créneau</>}</span></div>{!edit.loose&&lessonTiming(draft,duration(edit.slot)).total > duration(edit.slot) && <p className="warning">Le déroulement dépasse la durée du créneau.</p>}{draft.steps.map((s, i) => <div className="step-card" key={s.id}><div className="step-header"><span>ÉTAPE {i + 1}</span><div><button disabled={!i} aria-label="Monter l’étape" onClick={() => {
+  }}>×</button></div><div className="tabs">{["Essentiel", "Déroulement", "Réussite & adaptations"].map((t) => <button className={tab === t ? "chosen" : ""} onClick={() => setTab(t)} key={t}>{t}</button>)}</div><label className="background-toggle"><input type="checkbox" checked={showLessonBackground(draft)} onChange={(e) => setDraft({ ...draft, showBackground: e.target.checked })} /> Inclure le fond de la discipline (opacité 20 %)</label><div className="modal-body"><p className="soft-note" role="status"><b>Durée des étapes : {lessonTiming(draft,duration(edit.slot)).total} min</b>{!edit.loose&&<> · Créneau : {duration(edit.slot)} min</>}{!lessonTiming(draft,duration(edit.slot)).complete&&" · Certaines durées restent à renseigner."}</p>{tab === "Essentiel" ? <><div className="form-grid"><Field label="Nom de la séance" value={draft.title} change={(v) => setDraft({ ...draft, title: v })} wide /><SubjectFields lesson={draft} onChange={setDraft} showCurriculum /><Field label="Niveau / groupe" value={draft.level} change={(v) => setDraft({ ...draft, level: v })} /><Field label="Séquence" value={draft.sequence} change={(v) => setDraft({ ...draft, sequence: v })} /><Field label="N° de séance" value={draft.number} change={(v) => setDraft({ ...draft, number: v })} />{[["objectives", "Objectifs"], ["skills", "Compétences"], ["material", "Matériel"]].map(([k, l]) => <Field key={k} label={l} value={draft[k]} area wide change={(v) => setDraft({ ...draft, [k]: v })} />)}</div><p className="soft-note">Tu peux enregistrer une séance partielle et la compléter plus tard.</p></> : tab === "Déroulement" ? <><div className="step-summary"><b>{draft.steps.length} étape(s)</b><span>{lessonTiming(draft,duration(edit.slot)).total} min renseignées{!edit.loose&&<> / {duration(edit.slot)} min au créneau</>}</span></div>{!edit.loose&&lessonTiming(draft,duration(edit.slot)).total > duration(edit.slot) && <p className="warning">Le déroulement dépasse la durée du créneau.</p>}{draft.steps.map((s, i) => <div className="step-card" key={s.id}><div className="step-header"><span>ÉTAPE {i + 1}</span><div><button disabled={!i} aria-label="Monter l’étape" onClick={() => {
     let a = [...draft.steps];
     [a[i - 1], a[i]] = [a[i], a[i - 1]];
     setDraft({ ...draft, steps: a });
@@ -207,7 +211,8 @@ function Field({ label, value, change, area, options, wide, type = "text" }) {
 }
 function LessonPrint({ lesson: l, date, slot }) {
  const timing=lessonTiming(l,duration(slot));
- return <article className="lesson-print" style={paletteStyle(sheetPalette(l))}>{showLessonBackground(l)&&<img className="sheet-bg" alt="" src={"assets/"+meta(l.subject)[1]}/>}
+ const palette=useSheetPalette(l);
+ return <article className="lesson-print" style={paletteStyle(palette)}>{showLessonBackground(l)&&<img className="sheet-bg" alt="" src={"assets/"+meta(l.subject)[1]}/>}
  <div className="sheet-content"><h1>{l.title||"Séance à préparer"}</h1><div className="sheet-sub">Séance {l.number||"…"} · {l.level}{date&&<> · {pretty(date)}</>}</div>
  <div className="sheet-info"><b>Discipline :</b> {lessonDescriptor(l)} {l.sequence&&" · "+l.sequence}<br/>
  <b>Durée des étapes :</b> {timing.total?`${timing.total} min${timing.complete?'':' (total partiel)'}`:'non renseignée'}{date&&<> · <b>Créneau :</b> {timing.slotMinutes} min</>}

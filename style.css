@@ -27,3 +27,33 @@
 .day-continuation .continuation-content p{color:var(--subject-ink,#333)}
 /* Ateliers indépendants, séquences et projets. */
 aside{overflow-y:auto}.workshop-actions{display:flex;align-items:end;justify-content:space-between;gap:15px;flex-wrap:wrap}.document-list{display:grid;gap:18px;margin:24px 0}.document-card{padding:22px;background:#fff;border:1px solid var(--tone-e6e0e8);border-radius:18px;min-width:0}.document-card h2{font:26px Marelle;margin:0 0 10px}.document-card>div>button{margin:3px}.empty-workshop{padding:50px;text-align:center;color:var(--tone-81648e)}.workshop-modal .field{margin-bottom:14px}.workshop-modal{width:980px}.workshop-modal .background-toggle{margin:12px 0 20px}.project-thumbnail,.live-project{overflow:auto;margin:20px 0;background:#f5f2f6;border-radius:12px;max-height:460px}.project-thumbnail .project-print,.live-project .project-print{zoom:.65}.lesson-print.sequence-print,.lesson-print.project-print{width:297mm;min-height:210mm;padding:10mm}.sequence-print .sheet-bg{width:297mm;height:210mm}.sequence-print .sequence-table th:first-child{width:16%}.sequence-print .sequence-table th:last-child{width:33%}.sequence-print .sequence-table td:first-child{width:16%}.project-print{--subject-ink:#4b3e64;--subject-accent:#78608e;--subject-line:#b5a2c5;--subject-soft:#eee6f5}.project-map{position:relative;display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:7mm;margin:4mm 0;white-space:normal}.project-links{position:absolute;inset:0;width:100%;height:100%;z-index:0;overflow:visible}.project-links line{stroke:#a99cb5;stroke-width:.35}.cloud-column,.cloud-center{display:flex;flex-direction:column;justify-content:space-around;gap:5mm;position:relative;z-index:1;min-width:0}.cloud-center{justify-content:center;gap:5mm}.project-cloud{border:0.6mm solid var(--subject-line,#b09ac3);background:var(--subject-soft,#eee5f6);color:var(--subject-ink,#4b3e64);border-radius:43% 52% 46% 42% / 45% 44% 52% 49%;padding:5mm 6mm;text-align:center;overflow-wrap:anywhere;break-inside:avoid}.project-cloud h3{font:400 16pt Marelle;margin:0 0 1mm;color:inherit}.project-cloud p{margin:1.5mm 0 0;font:9pt/1.2 Avenir;white-space:pre-line}.project-cloud small{font-size:8pt}.project-cloud h2{font:400 16pt/1.16 Marelle;margin:2mm 0;white-space:pre-line}.pathway-cloud{border-color:#c8ae77;background:#fff1cf;color:#765723}.question-cloud{border-color:#a48abc;background:#eadff3;color:#58406e}.project-production{background:#efe8f4;border:0.3mm solid #a88cba;border-radius:3mm;padding:3mm;color:#503d61;white-space:pre-line}.project-production p{margin:1mm 0 0}.project-print .sheet-content{white-space:normal}.workshop-modal .modal-head h2{font-size:25px}.sequence-table tr{break-inside:avoid}@media(max-width:700px){.workshop-actions .field{width:100%}.document-card{padding:15px}.project-thumbnail .project-print,.live-project .project-print{zoom:.45}}@media print{@page marelle-workshop{size:A4 landscape;margin:0}.sequence-print,.project-print{page:marelle-workshop}.workshop,.live-project{display:none!important}}
+
+.subject-colors{margin:16px 0;border:1px solid var(--tone-e6deeb);border-radius:12px;padding:12px}
+.subject-colors label{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 0;text-align:left}
+.subject-colors input{width:44px;height:32px}
+.overlay .account-card{max-height:100%;overflow:auto}
+.mobile-week-days{display:none}
+@media screen and (max-width:700px){
+ .mobile-week-days{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+ .mobile-week-days button{padding:8px;min-height:44px}
+ .mobile-week-days button[aria-pressed=true]{background:var(--tone-eae0f0)}
+ .week-planner .weekly-layout{display:block;min-width:0}
+ .week-planner .week-column:not(.week-column-current){display:none}
+ .form-grid{grid-template-columns:minmax(0,1fr)}
+ .edit-icon{min-width:44px;min-height:44px}
+ .split-add{height:auto;opacity:1}
+ .split-add button{min-height:36px;padding:4px 8px}
+}
+
+.toast{pointer-events:none}
+
+.slot-lessons-split,.week-print-lessons-split{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:5px;
+ align-items:stretch;
+ overflow-wrap:anywhere;
+}
+.slot-lessons-split .lesson{height:auto;min-width:0}
+.lesson-lane{display:block;margin-top:4px;font-size:.85em}
+.week-print-lessons-split .week-print-lesson{min-width:0}

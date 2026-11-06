@@ -12,6 +12,16 @@ export const PALETTES={
  'Sciences':{ink:'#5a3d73',accent:'#79539b',line:'#ad91c3',soft:'#eee3f7',card:'#e4d5f1'}
 };
 export const GRAYSCALE={ink:'#333333',accent:'#555555',line:'#999999',soft:'#eeeeee',card:'#e7e7e7'};
-export function subjectPalette(subject){return PALETTES[subject]|| (subject==='Éducation musicale'?PALETTES['Arts visuels']:subject==='Vie de classe'?PALETTES.EMC:GRAYSCALE)}
+export function subjectPalette(subject){return PALETTES[subject]|| ((subject==='Éducation musicale'||subject==='Histoire des arts')?PALETTES['Arts visuels']:subject==='Vie de classe'?PALETTES.EMC:GRAYSCALE)}
 export function sheetPalette(lesson){return lesson.showBackground===false?GRAYSCALE:subjectPalette(lesson.subject)}
 export function paletteStyle(palette){return Object.fromEntries(Object.entries(palette).map(([key,value])=>['--subject-'+key,value]))}
+
+export function customSubjectPalette(subject, colors) {
+ const color=colors?.[subject];
+ if(typeof color!=='string'||!/^#[0-9a-f]{6}$/i.test(color))return subjectPalette(subject);
+ const mix=(target,ratio)=>'#'+[1,3,5].map(i=>{
+  const channel=parseInt(color.slice(i,i+2),16);
+  return Math.round(channel*(1-ratio)+target*ratio).toString(16).padStart(2,'0');
+ }).join('');
+ return {ink:mix(0,.72),accent:mix(0,.6),line:mix(255,.3),soft:mix(255,.86),card:mix(255,.72)};
+}
