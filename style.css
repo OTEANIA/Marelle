@@ -57,3 +57,17 @@ aside{overflow-y:auto}.workshop-actions{display:flex;align-items:end;justify-con
 .slot-lessons-split .lesson{height:auto;min-width:0}
 .lesson-lane{display:block;margin-top:4px;font-size:.85em}
 .week-print-lessons-split .week-print-lesson{min-width:0}
+
+.lesson-skills{min-width:0;margin:0;padding:12px;border:1px solid var(--tone-e6deeb);border-radius:10px}
+.lesson-skills legend{padding:0 5px;font-weight:bold}
+.lesson-skill-group+.lesson-skill-group{margin-top:8px}
+.lesson-skill-heading,.lesson-skill-actions{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.lesson-skill-heading button,.lesson-skill-group li button{min-width:36px;min-height:36px;padding:4px}
+.lesson-skill-group ul{margin:4px 0;padding:0;list-style:none}
+.lesson-skill-group li,.lesson-skill-options label{display:flex;align-items:flex-start;gap:8px;padding:6px}
+.lesson-skill-group li{justify-content:space-between}
+.lesson-skill-picker{padding:10px;margin:6px 0;border:1px solid var(--tone-e6deeb);border-radius:8px;background:white}
+.lesson-skills input[type=checkbox]{width:auto;flex:none;margin:4px}
+.lesson-skill-options{max-height:15rem;overflow:auto;margin:8px 0}
+.sheet-skills ul{margin:0;padding-left:4mm;white-space:normal}
+.sheet-skills>div+div{margin-top:1mm}

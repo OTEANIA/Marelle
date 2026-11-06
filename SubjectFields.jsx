@@ -1,20 +1,13 @@
 import React from 'react';
-import {curriculumFor,curriculumSkills,curriculumTheme,subjectLabel} from './curriculum.js';
+import {curriculumFor,curriculumTheme,subjectLabel} from './curriculum.js';
 import {SUBJECTS,scienceCycle,subthemesFor,changeSubject} from './disciplines.js';
 
-export default function SubjectFields({lesson,onChange,showCurriculum=false}) {
+export default function SubjectFields({lesson,onChange}) {
  const cycle=scienceCycle(lesson);
  const catalog=curriculumFor(lesson.subject,cycle);
  const options=catalog?Object.keys(catalog.groups):subthemesFor(lesson);
  const theme=curriculumTheme(lesson.subject,cycle,lesson.subTheme);
- const skills=curriculumSkills(lesson.subject,cycle,theme);
  const subjects=SUBJECTS.filter(([name])=>name===lesson.subject||name==='Vie de classe'||curriculumFor(name,cycle));
- const addSkill=event=>{
-  const skill=event.target.value;
-  const lines=(lesson.skills||'').split('\n');
-  if(skill&&!lines.includes(skill))onChange({...lesson,skills:[...lines.filter(Boolean),skill].join('\n')});
- };
-
  return <>
   <label className="field">
    <span>Discipline</span>
@@ -39,14 +32,5 @@ export default function SubjectFields({lesson,onChange,showCurriculum=false}) {
     {options.map(value=><option key={value}>{value}</option>)}
    </select>
   </label>}
-  {showCurriculum&&<div className="field wide">
-   <span>{catalog?.kind||'Compétences du programme polynésien'}</span>
-   {skills.length>0?<><select aria-label="Ajouter une compétence du programme" value="" onChange={addSkill}>
-    <option value="">Ajouter une compétence…</option>
-    {skills.map(skill=><option key={skill}>{skill}</option>)}
-   </select>
-   <small>{catalog.source}</small></>:
-    <small>Choisis un sous-thème du programme ou renseigne le champ Compétences librement.</small>}
-  </div>}
  </>;
 }
