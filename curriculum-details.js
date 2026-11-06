@@ -240,6 +240,34 @@ export const CURRICULUM_DETAILS = {
         {
           "text": "Être capable de mobiliser «les mots de la grammaire» pour résoudre des problèmes d’orthographe, d’écriture et de lecture.",
           "kind": "Connaissances et compétences associées"
+        },
+        {
+          "text": "Reconnaître les principaux constituants de la phrase : le sujet ; le verbe (connaissance des propriétés permettant de l’identifier) ; les compléments.",
+          "kind": "Connaissances et compétences associées · p. 71"
+        },
+        {
+          "text": "Comprendre : le fonctionnement du groupe nominal dans la phrase ; la notion de « chaîne d’accords » pour déterminant/nom/adjectif (singulier/pluriel ; masculin/féminin).",
+          "kind": "Connaissances et compétences associées · p. 75"
+        },
+        {
+          "text": "Identifier la relation sujet-verbe (identification dans des situations simples).",
+          "kind": "Connaissances et compétences associées · p. 76"
+        },
+        {
+          "text": "Identifier le radical et la terminaison.",
+          "kind": "Connaissances et compétences associées · p. 76"
+        },
+        {
+          "text": "Trouver l’infinitif d’un verbe conjugué.",
+          "kind": "Connaissances et compétences associées · p. 76"
+        },
+        {
+          "text": "Mémoriser le présent, l’imparfait, le futur, le passé composé pour : être et avoir ; les verbes du 1er groupe ; les verbes irréguliers du 3e groupe (faire, aller, dire, venir, pouvoir, voir, vouloir, prendre).",
+          "kind": "Connaissances et compétences associées · p. 76"
+        },
+        {
+          "text": "Distinguer temps simples et temps composés.",
+          "kind": "Connaissances et compétences associées · p. 77"
         }
       ]
     },
@@ -598,6 +626,108 @@ export const CURRICULUM_DETAILS = {
         {
           "text": "Construire des repères temporels.",
           "kind": "Compétences travaillées"
+        }
+      ]
+    },
+    "Anglais": {
+      "Comprendre l’oral": [
+        {
+          "text": "Comprendre les consignes de classe.",
+          "kind": "Connaissances et compétences associées"
+        },
+        {
+          "text": "Utiliser quelques mots familiers et quelques expressions très courantes.",
+          "kind": "Connaissances et compétences associées"
+        }
+      ],
+      "S’exprimer oralement en continu": [
+        {
+          "text": "Reproduire un modèle oral.",
+          "kind": "Connaissances et compétences associées"
+        },
+        {
+          "text": "Utiliser des expressions courtes ou phrases proches des modèles rencontrés lors des apprentissages pour se décrire.",
+          "kind": "Connaissances et compétences associées"
+        }
+      ],
+      "Prendre part à une conversation": [
+        {
+          "text": "Saluer. Se présenter.",
+          "kind": "Connaissances et compétences associées"
+        },
+        {
+          "text": "Demander à quelqu’un de ses nouvelles et réagir, donner de ses nouvelles.",
+          "kind": "Connaissances et compétences associées"
+        },
+        {
+          "text": "Formuler des souhaits basiques.",
+          "kind": "Connaissances et compétences associées"
+        },
+        {
+          "text": "Utiliser des formules de politesse.",
+          "kind": "Connaissances et compétences associées"
+        }
+      ]
+    },
+    "Arts visuels": {
+      "*": [
+        {
+          "text": "Réaliser et donner à voir, individuellement ou collectivement, des productions plastiques de natures diverses.",
+          "kind": "Attendus de fin de cycle"
+        },
+        {
+          "text": "Proposer des réponses inventives dans un projet individuel ou collectif.",
+          "kind": "Attendus de fin de cycle"
+        },
+        {
+          "text": "Coopérer dans un projet artistique.",
+          "kind": "Attendus de fin de cycle"
+        },
+        {
+          "text": "S’exprimer sur sa production, celle de ses pairs, sur l’art.",
+          "kind": "Attendus de fin de cycle"
+        },
+        {
+          "text": "Comparer quelques œuvres d’art.",
+          "kind": "Attendus de fin de cycle"
+        }
+      ]
+    },
+    "Éducation musicale": {
+      "Chanter": [
+        {
+          "text": "Expérimenter sa voix parlée et chantée, explorer ses paramètres, la mobiliser au bénéfice d’une reproduction expressive.",
+          "kind": "Attendus de fin de cycle"
+        }
+      ],
+      "Écouter, comparer": [
+        {
+          "text": "Connaître et mettre en œuvre les conditions d’une écoute attentive et précise.",
+          "kind": "Attendus de fin de cycle"
+        }
+      ],
+      "Explorer et imaginer": [
+        {
+          "text": "Imaginer des organisations simples ; créer des sons et maîtriser leur succession.",
+          "kind": "Attendus de fin de cycle"
+        }
+      ],
+      "Échanger, partager": [
+        {
+          "text": "Exprimer sa sensibilité et exercer son esprit critique tout en respectant les goûts et points de vue de chacun.",
+          "kind": "Attendus de fin de cycle"
+        }
+      ]
+    },
+    "EMC": {
+      "CP · Règles d’hygiène et exigence d’intimité": [
+        {
+          "text": "Avoir conscience de son intégrité",
+          "kind": "Contenus d’enseignement"
+        },
+        {
+          "text": "Connaître et respecter les règles élémentaires de l’intimité personnelle.",
+          "kind": "Contenus d’enseignement"
         }
       ]
     }
@@ -1356,6 +1486,56 @@ export const CURRICULUM_DETAILS = {
         {
           "text": "Travailler en commun pour faciliter les apprentissages individuels.",
           "kind": "Compétences travaillées"
+        }
+      ]
+    },
+    "Éducation musicale": {
+      "Chanter et interpréter": [
+        {
+          "text": "Identifier, choisir et mobiliser les techniques vocales et corporelles au service du sens et de l’expression.",
+          "kind": "Attendus de fin de cycle"
+        }
+      ],
+      "Écouter, comparer et commenter": [
+        {
+          "text": "Mettre en lien des caractéristiques musicales d’œuvres différentes, les nommer et les présenter en lien avec d’autres savoirs construits par les enseignements (histoire, géographie, français, sciences etc.).",
+          "kind": "Attendus de fin de cycle"
+        }
+      ],
+      "Explorer, imaginer et créer": [
+        {
+          "text": "Explorer les sons de la voix et de son environnement, imaginer des utilisations musicales, créer des organisations dans le temps d’un ensemble de sons sélectionnés.",
+          "kind": "Attendus de fin de cycle"
+        }
+      ],
+      "Échanger, partager et argumenter": [
+        {
+          "text": "Développer sa sensibilité, son esprit critique et s’enrichir de la diversité des goûts personnels et des esthétiques.",
+          "kind": "Attendus de fin de cycle"
+        }
+      ]
+    },
+    "Histoire des arts": {
+      "*": [
+        {
+          "text": "Décrire une œuvre en identifiant ses principales caractéristiques techniques et formelles à l’aide d’un lexique simple et adapté.",
+          "kind": "Attendus de fin de cycle"
+        },
+        {
+          "text": "Émettre une proposition argumentée, fondée sur quelques grandes caractéristiques d’une œuvre, pour situer celle-ci dans une période et une aire géographique, au risque de l’erreur.",
+          "kind": "Attendus de fin de cycle"
+        },
+        {
+          "text": "Exprimer un ressenti et un avis devant une œuvre, étayés à l’aide d’une première analyse.",
+          "kind": "Attendus de fin de cycle"
+        },
+        {
+          "text": "Se repérer dans un musée ou un centre d’art, adapter son comportement au lieu et identifier la fonction de ses principaux acteurs.",
+          "kind": "Attendus de fin de cycle"
+        },
+        {
+          "text": "Identifier la marque des arts du passé et du présent dans son environnement.",
+          "kind": "Attendus de fin de cycle"
         }
       ]
     }
