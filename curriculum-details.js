@@ -218,6 +218,10 @@ export const CURRICULUM_DETAILS = {
           "kind": "Connaissances et compétences associées"
         },
         {
+          "text": "Différencier les principales classes de mots : le nom ; l’article défini, l’article indéfini ; l’adjectif ; le verbe ; le pronom personnel sujet ; les mots invariables.",
+          "kind": "Connaissances et compétences associées · p. 72"
+        },
+        {
           "text": "Reconnaître le groupe nominal.",
           "kind": "Connaissances et compétences associées"
         },

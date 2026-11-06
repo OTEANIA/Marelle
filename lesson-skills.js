@@ -77,14 +77,14 @@ export function skillChoices(lesson,associated,allThemes=false) {
    kind:catalog.kind
   }));
   const choices=associated?[...detailed,...extra,...primary]:
-   [...primary,...extra.filter(item=>item.kind!=='Connaissances et compétences associées')];
+   [...primary,...extra.filter(item=>!item.kind.startsWith('Connaissances et compétences associées'))];
   return choices.filter(({text})=>{
    const key=normalize(text);
    if(seen.has(key))return false;
    seen.add(key);
    return true;
   }).map(item=>({...item,group,source:catalog.source,
-   officialAssociated:associated&&item.kind==='Connaissances et compétences associées'}));
+   officialAssociated:associated&&item.kind.startsWith('Connaissances et compétences associées')}));
  });
 }
 
