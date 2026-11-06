@@ -28,7 +28,7 @@ export default function SubjectFields({lesson,onChange}) {
    <span>Sous-thème</span>
    <select value={theme||''} onChange={event=>onChange({...lesson,subTheme:event.target.value})}>
     <option value="">Non renseigné</option>
-    {theme&&!options.includes(theme)&&<option value={theme}>{theme} (valeur conservée)</option>}
+    {theme&&!options.includes(theme)&&<option value={theme}>{theme}</option>}
     {options.map(value=><option key={value}>{value}</option>)}
    </select>
   </label>}

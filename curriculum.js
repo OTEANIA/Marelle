@@ -23,6 +23,8 @@ const LEGACY_THEMES={
   Géométrie:'Espace et géométrie'
  },
  Sciences:{
+  'Le monde du vivant':'Comment reconnaître le monde vivant ?',
+  'Le monde vivant':'Comment reconnaître le monde vivant ?',
   "L'espace":'Se situer dans l’espace',
   'Le temps':'Se situer dans le temps',
   'Physique-Chimie':'Matière, mouvement, énergie, information',
