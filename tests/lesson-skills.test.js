@@ -19,3 +19,12 @@ test('les anciennes compétences reconnues reprennent les libellés du catalogue
  });
  assert.deepEqual(lessonSkills({...reading,skills,selectedSkills:{main:[],associated:[]}}),{main:[],associated:[]});
 });
+
+test('les formulations multiplicatives sont proposées avec leur rubrique et leur page',()=>{
+ const lesson={subject:'Mathématiques',cycle:'Cycle 2',subTheme:'Nombres et calculs'};
+ const choices=skillChoices(lesson,false);
+ assert.ok(choices.some(x=>x.text.startsWith('Réaliser que certains problèmes')&&x.kind.includes('Modéliser')));
+ assert.ok(choices.some(x=>x.text==='Il résout des problèmes du champ multiplicatif (itération d’addition).'&&x.kind.includes('CE1 · p. 96')));
+ assert.ok(skillChoices(lesson,true).some(x=>x.text.startsWith('Modéliser ces problèmes')&&x.officialAssociated));
+ assert.ok(!skillChoices({...lesson,subTheme:'Espace et géométrie'},false).some(x=>x.kind.includes('CE1 · p. 96')));
+});

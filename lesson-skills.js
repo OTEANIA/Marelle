@@ -1,3 +1,4 @@
+import {CURRICULUM_DETAILS} from './curriculum-details.js';
 import {curriculumFor,curriculumTheme} from './curriculum.js';
 import {scienceCycle} from './disciplines.js';
 
@@ -61,17 +62,29 @@ export function skillChoices(lesson,associated,allThemes=false) {
  const theme=curriculumTheme(lesson.subject,cycle,lesson.subTheme);
  const frenchCycleTwo=cycle==='Cycle 2'&&lesson.subject==='Français';
  const seen=new Set();
+ const subjectDetails=CURRICULUM_DETAILS[cycle]?.[lesson.subject];
+ const additional=associatedByCycle[cycle]?.[lesson.subject];
  return Object.entries(catalog.groups).flatMap(([group,main])=>{
   if(!allThemes&&theme&&group!==theme)return [];
-  const subjectDetails=associatedByCycle[cycle];
-  const detailed=subjectDetails&&Object.hasOwn(subjectDetails,lesson.subject)
-   ? (Object.hasOwn(subjectDetails[lesson.subject],group)?subjectDetails[lesson.subject][group]:[]) : [];
-  const primary=frenchCycleTwo&&group===frenchOral?main.map(text=>text==='Dire pour être entendu et compris.'?oralPresentation:text):main;
-  return (associated?[...detailed,...primary]:primary).filter(text=>{
-   if(seen.has(text))return false;
-   seen.add(text);
+  const readingTheme=cycle==='Cycle 3'&&lesson.subject==='Français'&&!Object.hasOwn(subjectDetails||{},group);
+  const extra=[
+   ...(subjectDetails?.[readingTheme?frenchReading:group]||[]),
+   ...(subjectDetails?.['*']||[])
+  ];
+  const detailed=(additional?.[group]||[]).map(text=>({text,kind:'Connaissances et compétences associées'}));
+  const primary=main.map(text=>({
+   text:frenchCycleTwo&&group===frenchOral&&text==='Dire pour être entendu et compris.'?oralPresentation:text,
+   kind:catalog.kind
+  }));
+  const choices=associated?[...detailed,...extra,...primary]:
+   [...primary,...extra.filter(item=>item.kind!=='Connaissances et compétences associées')];
+  return choices.filter(({text})=>{
+   const key=normalize(text);
+   if(seen.has(key))return false;
+   seen.add(key);
    return true;
-  }).map(text=>({text,group,officialAssociated:associated&&detailed.includes(text)}));
+  }).map(item=>({...item,group,source:catalog.source,
+   officialAssociated:associated&&item.kind==='Connaissances et compétences associées'}));
  });
 }
 
