@@ -24,11 +24,11 @@ test('le journal rendu exclut réellement les séances après la sortie et les j
   const printed=render(Journal,{date:'2026-11-02',data:fullDay,printable:true});
   assert.equal((printed.match(/CROSS_UNIQUE/g)||[]).length,1);assert.equal((printed.match(/Observations :/g)||[]).length,1);assert.equal((printed.match(/class="observation-line/g)||[]).length,2);assert(printed.includes('10:00'));assert(printed.includes('Pauses maintenues'));assert(printed.includes('Récréation'));
   assert(!render(Journal,{date:'2026-11-02',data:fullDay}).includes('Observations :'));
-  const dayCards=render(DaySlots,{date:'2026-11-02',data:fullDay,onOpen:()=>{},onSelect:()=>{}});assert(dayCards.includes('OBJECTIF_VISIBLE'));assert(dayCards.includes('Suite :'));assert(dayCards.includes('Nouvelle séance ici'));
+  const dayCards=render(DaySlots,{date:'2026-11-02',data:fullDay,onOpen:()=>{},onSelect:()=>{}});assert(dayCards.includes('OBJECTIF_VISIBLE'));assert(dayCards.includes('min restantes'));assert(dayCards.includes('Mathématiques'));
   const weekWithObjectives=render(WeeklyPrint,{week:'2026-11-02',data:fullDay,profile:{}});assert(weekWithObjectives.includes('OBJECTIF_VISIBLE'));assert(weekWithObjectives.includes('Suite :'));
   const full=render(LessonPrint,{lesson:lesson('FICHE'),date:'2026-10-28',slot:data.slots[0]});assert(full.includes('DETAIL_CACHE'));assert(full.includes('OBS_CACHE'));assert(full.includes('sheet-bg'));
   const timed=render(LessonPrint,{lesson:{...lesson('DICO'),steps:[{id:'x',title:'Phase',time:'45',instruction:'CONSIGNE_INTEGRALE',details:'DETAIL_INTEGRAL',mode:'Collectif',observables:'OBSERVABLE_INTEGRAL'}]},date:'2026-11-02',slot:{start:'08:00',end:'08:20'}});
-  assert(timed.includes('45 min'));assert(timed.includes('20 min'));assert(timed.includes('+25 min'));assert(timed.includes('stage-band'));assert(timed.includes('CONSIGNE_INTEGRALE'));assert(timed.includes('DETAIL_INTEGRAL'));assert(timed.includes('OBSERVABLE_INTEGRAL'));assert(timed.includes('Modalité :'));
+  assert(timed.includes('45 min'));assert(!timed.includes('Créneau :'));assert(!timed.includes('Écart au créneau'));assert(!timed.includes('min restantes'));assert(timed.includes('stage-band'));assert(timed.includes('CONSIGNE_INTEGRALE'));assert(timed.includes('DETAIL_INTEGRAL'));assert(timed.includes('OBSERVABLE_INTEGRAL'));assert(timed.includes('Modalité :'));
   assert(render(SubjectFields,{lesson:{subject:'Français',subTheme:'Langage oral'},onChange:()=>{}}).includes('Langage oral'));
   assert(!render(LessonPrint,{lesson:{...lesson('SANS FOND'),showBackground:false},date:'2026-10-28',slot:data.slots[0]}).includes('sheet-bg'));
  }finally{await fs.rm(directory,{recursive:true,force:true})}
