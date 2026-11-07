@@ -50,3 +50,15 @@ test('deux niveaux simultanés consomment la durée la plus longue et signalent 
  assert.equal(period.remaining,40);
  assert.equal(period.complete,false);
 });
+
+test('une séance sans timing utilise son créneau et une sortie réserve les créneaux libres hors pauses',()=>{
+ const value=data();
+ value.lessons[date+'|a|all']={steps:[]};
+ assert.equal(planningPeriods(value,date)[0].used,40);
+ assert.equal(planningPeriods(value,date)[0].complete,true);
+ value.lessons[date+'|a|all'].extendUntilNext=true;
+ assert.equal(planningPeriods(value,date)[0].remaining,0);
+ assert.equal(planningPeriods(value,date)[0].empty,0);
+ value.lessons[date+'|c|all']=lesson('10');
+ assert.equal(planningPeriods(value,date)[0].used,80);
+});

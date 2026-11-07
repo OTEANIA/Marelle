@@ -1,7 +1,7 @@
 export const DAYS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
 export const isTime = value => typeof value === 'string' && /^([01]\d|2[0-3]):[0-5]\d$/.test(value);
 export const dayIndex = date => (new Date(date + 'T12:00:00').getDay() + 6) % 7;
-export const isBreak = slot => /récréation|pause/i.test(slot.label);
+export const isBreak = slot => /récréation|pause|déjeuner|dejeuner|repas|méridien|meridien/i.test(slot.label);
 export function migratePlanner(input, defaults = []) {
   const source = input || {slots: defaults, lessons: {}};
   if (!Array.isArray(source.slots) || !source.lessons || typeof source.lessons !== 'object' || Array.isArray(source.lessons)) throw new Error('Planning invalide');

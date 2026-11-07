@@ -8,7 +8,7 @@ export function resolveDay(data,date){
   if(isBreak(slot)){rows.push({kind:'break',slot});continue;}
   const entries=lessonEntries(data,date,slot);
   if(entries.length){active={sourceSlot:slot,entries,coveredSlots:[slot],pauses:[]};groups.push(active);rows.push({kind:'lesson',slot,group:active});}
-  else if(active){active.coveredSlots.push(slot);rows.push({kind:'continuation',slot,group:active});}
+  else if(active&&active.entries.every(({lesson})=>lesson.extendUntilNext===true)){active.coveredSlots.push(slot);rows.push({kind:'continuation',slot,group:active});}
   else rows.push({kind:'empty',slot});
  }
  for(const group of groups){
@@ -23,8 +23,8 @@ export function resolveDay(data,date){
 export function previewLessonSlot(data,date,slot){
  const actual=slotsForDate(data,date).find(value=>value.id===slot.id)||slot;
  if(isBreak(actual))return actual;
- // Même une nouvelle préparation peut occuper les créneaux vides qui suivent.
+ // Une nouvelle préparation reste sur son créneau tant que la prolongation est décochée.
  const key=`${date}|${actual.id}|all`;
- const simulated={...data,lessons:{...data.lessons,[key]:data.lessons[key]||{title:''}}};
+ const simulated=lessonEntries(data,date,actual).length?data:{...data,lessons:{...data.lessons,[key]:{title:'',extendUntilNext:false}}};
  return resolveDay(simulated,date).groups.find(group=>group.sourceSlot.id===actual.id)?.effectiveSlot||actual;
 }
